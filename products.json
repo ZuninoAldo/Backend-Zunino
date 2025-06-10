@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "title": "Mouse Gamer",
+        "description": "Este es un Mouse Gamer de alta calidad.",
+        "price": 19,
+        "thumbnail": "https://example.com/image.jpg",
+        "code": "SP001",
+        "stock": 10
+    },
+    {
+        "id": 2,
+        "title": "Teclado Mecánico",
+        "description": "Un teclado mecánico con retroiluminación RGB.",
+        "price": 29,
+        "thumbnail": "https://example.com/image2.jpg",
+        "code": "AP002",
+        "stock": 5
+    },
+    {
+        "id": 3,
+        "title": "Monitor 4K",
+        "description": "Un monitor 4K de alta resolución.",
+        "price": 299,
+        "thumbnail": "https://example.com/image3.jpg",
+        "code": "MN003",
+        "stock": 8
+    },
+    {
+        "id": 4,
+        "title": "Mousepad RGB",
+        "description": "Un mousepad RGB de alta calidad.",
+        "price": 21,
+        "thumbnail": "https://example.com/image4.jpg",
+        "code": "MP004",
+        "stock": 15
+    },
+    {
+        "id": 5,
+        "title": "Cooler RGB",
+        "description": "Un cooler RGB de alta calidad.",
+        "price": 9,
+        "thumbnail": "https://example.com/image5.jpg",
+        "code": "CL005",
+        "stock": 21
+    }
+]
