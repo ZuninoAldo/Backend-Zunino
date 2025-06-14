@@ -1,0 +1,77 @@
+[
+  {
+    "id": 1,
+    "title": "Mouse Gamer",
+    "description": "Este es un Mouse Gamer de alta calidad.",
+    "price": 19,
+    "thumbnail": [
+      "https://example.com/image1.jpg",
+      "https://example.com/image1_2.jpg",
+      "https://example.com/image1_3.jpg"
+    ],
+    "code": "SP001",
+    "stock": 10,
+    "category": "Periféricos",
+    "status": true
+  },
+  {
+    "id": 2,
+    "title": "Teclado Mecánico",
+    "description": "Un teclado mecánico con retroiluminación RGB.",
+    "price": 29,
+    "thumbnail": [
+      "https://example.com/image2.jpg",
+      "https://example.com/image2_2.jpg",
+      "https://example.com/image2_3.jpg"
+    ],
+    "code": "AP002",
+    "stock": 5,
+    "category": "Periféricos",
+    "status": true
+  },
+  {
+    "id": 3,
+    "title": "Monitor 4K",
+    "description": "Un monitor 4K de alta resolución.",
+    "price": 299,
+    "thumbnail": [
+      "https://example.com/image3.jpg",
+      "https://example.com/image3_2.jpg",
+      "https://example.com/image3_3.jpg"
+    ],
+    "code": "MN003",
+    "stock": 8,
+    "category": "Monitores",
+    "status": true
+  },
+  {
+    "id": 4,
+    "title": "Mousepad RGB",
+    "description": "Un mousepad RGB de alta calidad.",
+    "price": 21,
+    "thumbnail": [
+      "https://example.com/image4.jpg",
+      "https://example.com/image4_2.jpg",
+      "https://example.com/image4_3.jpg"
+    ],
+    "code": "MP004",
+    "stock": 15,
+    "category": "Accesorios",
+    "status": true
+  },
+  {
+    "id": 5,
+    "title": "Gabinete Gamer RGB",
+    "description": "Un gabinete gamer RGB de alta capacidad.",
+    "price": 18,
+    "thumbnail": [
+      "https://example.com/image5.jpg",
+      "https://example.com/image5_2.jpg",
+      "https://example.com/image5_3.jpg"
+    ],
+    "code": "GC008",
+    "stock": 16,
+    "category": "Gabinetes",
+    "status": true
+  }
+]

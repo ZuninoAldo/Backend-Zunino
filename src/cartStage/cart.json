@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "products": [
+      {
+        "id": 5,
+        "title": "Teclado Inalámbrico",
+        "description": "Teclado mecanico de switch blue y batería de larga duración.",
+        "quantity": 4
+      },
+      {
+        "id": 6,
+        "title": "Monitor 32 pulgadas",
+        "description": "Monitor Full HD de 32 pulgadas con panel IPS.",
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "products": [
+      {
+        "id": 7,
+        "title": "Mouse Inalámbrico",
+        "description": "Mouse inalambrico profesional y batería de larga duración.",
+        "quantity": 8
+      },
+      {
+        "id": 8,
+        "title": "Monitor 27 pulgadas",
+        "description": "Monitor Full HD de 27 pulgadas con panel IPS.",
+        "quantity": 12
+      },
+      {
+        "id": 9,
+        "title": "Microfono para Stream",
+        "description": "Microfono profesional ideal para Streamear, incluye boton de silencio.",
+        "quantity": 1
+      }
+    ]
+  }
+]
