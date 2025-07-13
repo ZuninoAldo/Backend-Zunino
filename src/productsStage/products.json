@@ -73,5 +73,14 @@
     "stock": 16,
     "category": "Gabinetes",
     "status": true
+  },
+  {
+    "id": 6,
+    "title": "Camara Web",
+    "description": "Una camara web que graba videos en 4k a 30 fps",
+    "price": "18",
+    "code": "18GF2R",
+    "stock": "12",
+    "category": "Camaras"
   }
 ]

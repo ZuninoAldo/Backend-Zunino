@@ -1,0 +1,10 @@
+<div>
+    <h1>Página HOME</h1>
+
+    <h3>Listado de Productos</h3>
+    <ul>
+        {{#each products}}
+            <li>Producto: {{this.title}} - ${{this.price}} - Stock: {{this.stock}}</li>
+        {{/each}}
+    </ul>
+</div>

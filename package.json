@@ -2,7 +2,7 @@
   "name": "backend-i",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
-    "moment": "^2.30.1"
+    "express-handlebars": "^8.0.3",
+    "socket.io": "^4.8.1"
   }
 }
