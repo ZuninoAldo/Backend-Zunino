@@ -16,6 +16,7 @@
     <ul id="productList">
         {{#each products}}
         <li>Producto: {{this.title}} - ${{this.price}} - Stock: {{this.stock}}</li>
+        <button type="submit" data-id="{{this.id}}">Eliminar</button>
         {{/each}}
     </ul>
 </div>

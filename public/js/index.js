@@ -20,3 +20,17 @@ socket.on('productAdded', (newProduct) => {
     const productList = document.getElementById('productList');
     productList.innerHTML += `<li>Producto: ${newProduct.title} - $${newProduct.price} - Stock: ${newProduct.stock}</li>`;
 });
+
+socket.on('productDeleted', (productId) => {
+    const productList = document.getElementById('productList');
+    const productItem = productList.querySelector(`li[data-id="${productId}"]`);
+    if (productItem) {
+        productList.removeChild(productItem);
+    }
+    productList.innerHTML += `<li>Producto con ID ${productId} eliminado</li>`;
+    
+    const deleteButton = document.getElementById(`delete-${productId}`);
+    if (deleteButton) {
+        deleteButton.remove();
+    }
+});
