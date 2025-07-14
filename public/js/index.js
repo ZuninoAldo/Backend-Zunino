@@ -52,7 +52,7 @@ socket.on('productDeleted', (productId) => {
 });
 
 productList.addEventListener('click', (event) => {
-    
+
     if (event.target.classList.contains('delete-button')) {
 
         const productId = parseInt(event.target.dataset.id);
