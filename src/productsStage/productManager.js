@@ -29,7 +29,7 @@ class ProductManager {
             products.push(product);
 
             await fs.promises.writeFile(this.pathFile, JSON.stringify(products, null, 2), 'utf-8');
-            return products;
+            return product;
         } catch (error) {
             throw new Error('Error al agregar el nuevo producto: ' + error.message);
         }

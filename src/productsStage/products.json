@@ -82,5 +82,23 @@
     "code": "18GF2R",
     "stock": "12",
     "category": "Camaras"
+  },
+  {
+    "id": 7,
+    "title": "Memorias RAM KINGSTON",
+    "description": "Memorias ram kingston de 32gb (2x16)",
+    "price": "17",
+    "code": "f4s8f",
+    "stock": "6",
+    "category": "memorias"
+  },
+  {
+    "id": 8,
+    "title": "Refrigeración Líquida Asus",
+    "description": "Refrigeración líquida Asus",
+    "price": "89",
+    "code": "a47fe",
+    "stock": "12",
+    "category": "Refrigeración"
   }
 ]

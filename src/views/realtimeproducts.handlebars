@@ -15,8 +15,10 @@
     <h3>Listado de Productos En Tiempo Real</h3>
     <ul id="productList">
         {{#each products}}
-        <li>Producto: {{this.title}} - ${{this.price}} - Stock: {{this.stock}}</li>
-        <button type="submit" data-id="{{this.id}}">Eliminar</button>
+        <li data-id="{{this.id}}">
+            Producto: {{this.title}} - ${{this.price}} - Stock: {{this.stock}}
+            <button class="delete-button" data-id="{{this.id}}">Eliminar</button>
+        </li>
         {{/each}}
     </ul>
 </div>
