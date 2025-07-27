@@ -22,5 +22,10 @@
         {{/each}}
     </ul>
 </div>
+<div>
+    {{#each links}}
+        <a href={{this.link}}>{{this.text}}</a>
+    {{/each}}
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

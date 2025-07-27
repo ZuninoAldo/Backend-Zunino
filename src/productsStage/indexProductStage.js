@@ -1,4 +1,4 @@
-import ProductManager from "./productManager.js";
+import ProductManager from "../Managers/productManager.js";
 import express from "express"
 
 const app = express();

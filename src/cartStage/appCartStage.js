@@ -1,4 +1,4 @@
-import CartManager from "./cartManager.js";
+import CartManager from "../Managers/cartManager.js";
 import express from "express";
 
 const app = express();
