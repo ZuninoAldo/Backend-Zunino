@@ -30,37 +30,45 @@ class CartManager {
         }
     }
 
-    async addProductToCart(cid, pid) {
-
-        const productCheck = await productManager.getProductById(pid);
-        if (productCheck.status === 'error') {
-            return { status: "error", message: "El producto que intentas agregar no existe." };
-        }
-
-        try {
-            const cart = await Cart.findById(cid);
-            if (!cart) {
-                return { status: "error", message: "Carrito no encontrado." };
-            }
-
-
-            const productIndex = cart.products.findIndex(p => p.product.toString() === pid);
-
-            if (productIndex !== -1) {
-
-                cart.products[productIndex].quantity += 1;
-            } else {
-
-                cart.products.push({ product: pid, quantity: 1 });
-            }
-
-            await cart.save();
-            return { status: "success", payload: cart };
-
-        } catch (error) {
-            return { status: "error", message: "Error al agregar producto al carrito: " + error.message };
-        }
+async addProductToCart(cid, pid) {
+    const productCheck = await productManager.getProductById(pid);
+    if (productCheck.status === 'error') {
+        return { status: "error", message: "El producto que intentas agregar no existe." };
     }
+
+    const product = productCheck.payload;
+
+    if (product.stock <= 0) {
+        return { status: "error", message: "No hay stock disponible para este producto." };
+    }
+
+    try {
+        const cart = await Cart.findById(cid);
+        if (!cart) {
+            return { status: "error", message: "Carrito no encontrado." };
+        }
+
+        const productIndex = cart.products.findIndex(p => p.product.toString() === pid);
+
+        if (productIndex !== -1) {
+            if (cart.products[productIndex].quantity + 1 > product.stock) {
+                return { status: "error", message: "No hay suficiente stock disponible." };
+            }
+            cart.products[productIndex].quantity += 1;
+        } else {
+            cart.products.push({ product: pid, quantity: 1 });
+        }
+
+        // Restar stock al producto
+        product.stock -= 1;
+        await product.save();
+
+        await cart.save();
+        return { status: "success", payload: cart };
+    } catch (error) {
+        return { status: "error", message: "Error al agregar producto al carrito: " + error.message };
+    }
+}
 
     async removeProductFromCart(cid, pid) {
         try {

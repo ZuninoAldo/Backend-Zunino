@@ -4,12 +4,21 @@
     <h3>Listado de Productos</h3>
     <ul>
         {{#each products}}
-            <li>Producto: {{this.title}} - ${{this.price}} - Stock: {{this.stock}}</li>
+            <li>
+                Producto: {{this.title}} - ${{this.price}} - Stock: {{this.stock}}
+                <form action="/api/carts/{{../cartId}}/product/{{this._id}}" method="post" style="display:inline;">
+                    <button type="submit">Agregar al carrito</button>
+                </form>
+                <a href="/products/{{this._id}}">Ver detalle</a>
+            </li>
         {{/each}}
     </ul>
 </div>
 <div>
-    {{#each links}}
-        <a href={{this.link}}>{{this.text}}</a>
-    {{/each}}
+    {{#if hasPrevPage}}
+        <a href="{{prevLink}}">Página anterior</a>
+    {{/if}}
+    {{#if hasNextPage}}
+        <a href="{{nextLink}}">Página siguiente</a>
+    {{/if}}
 </div>

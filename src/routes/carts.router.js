@@ -13,7 +13,6 @@ cartRouter.post("/", async (req, res) => {
     }
 });
 
-
 cartRouter.get("/:cid", async (req, res) => {
     const { cid } = req.params;
     const result = await cartManager.getCartById(cid);
@@ -25,10 +24,11 @@ cartRouter.get("/:cid", async (req, res) => {
     }
 });
 
-
 cartRouter.post("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
-    const result = await cartManager.addProductToCart(cid, pid);
+    const quantity = parseInt(req.body.quantity) || 1;
+
+    const result = await cartManager.addProductToCart(cid, pid, quantity);
     
     if (result.status === "success") {
         res.status(201).json(result);
@@ -36,7 +36,6 @@ cartRouter.post("/:cid/product/:pid", async (req, res) => {
         res.status(400).json({ status: "error", message: result.message });
     }
 });
-
 
 cartRouter.delete("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
@@ -55,6 +54,29 @@ cartRouter.put("/:cid/products/:pid", async (req, res) => {
     
     const result = await cartManager.updateProductQuantity(cid, pid, quantity);
     
+    if (result.status === "success") {
+        res.status(200).json(result);
+    } else {
+        res.status(400).json({ status: "error", message: result.message });
+    }
+});
+
+cartRouter.put("/:cid", async (req, res) => {
+    const { cid } = req.params;
+    const { products } = req.body;
+
+    const result = await cartManager.updateCart(cid, products);
+    if (result.status === "success") {
+        res.status(200).json(result);
+    } else {
+        res.status(400).json({ status: "error", message: result.message });
+    }
+});
+
+cartRouter.delete("/:cid", async (req, res) => {
+    const { cid } = req.params;
+
+    const result = await cartManager.emptyCart(cid);
     if (result.status === "success") {
         res.status(200).json(result);
     } else {

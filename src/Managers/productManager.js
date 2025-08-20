@@ -7,32 +7,35 @@ class ProductManager {
         console.log("ProductManager funcionando con MongoDB.");
     }
 
-    async getProducts(params) {
+async getProducts(params) {
+    const { limit = 10, page = 1, sort, query } = params;
 
-        const { limit = 10, page = 1, sort, query } = params;
+    const options = {
+        page: Number(page),
+        limit: Number(limit),
+        lean: true
+    };
 
-        const options = {
-            page: Number(page),
-            limit: Number(limit),
-            lean: true
-        };
+    if (sort) {
+        options.sort = { price: sort === 'asc' ? 1 : -1 };
+    }
 
-
-        if (sort) {
-            options.sort = { price: sort === 'asc' ? 1 : -1 };
-        }
-
-
-        const filter = query ? { category: query } : {};
-
-        try {
-
-            const result = await Product.paginate(filter, options);
-            return { status: "success", payload: result };
-        } catch (error) {
-            return { status: "error", message: "Error al obtener los productos: " + error.message };
+    let filter = {};
+    if (query) {
+        if (query === "true" || query === "false") {
+            filter.status = query === "true";
+        } else {
+            filter.category = query;
         }
     }
+
+    try {
+        const result = await Product.paginate(filter, options);
+        return { status: "success", payload: result };
+    } catch (error) {
+        return { status: "error", message: "Error al obtener los productos: " + error.message };
+    }
+}
 
     async addProduct(productData) {
 
