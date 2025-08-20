@@ -1,47 +1,72 @@
 import express from 'express';
-import Product from '../models/product.model.js';
 
+import ProductManager from '../Managers/productManager.js';
 
 const viewsRouter = express.Router();
+const productManager = new ProductManager();
 
 
-viewsRouter.get("/", async(req, res)=> {
+const renderProductsPage = async (req, res, viewName) => {
     try {
-        const { limit = 10, page = 1 } = req.query;
-        const data = await Product.paginate({}, { limit, page, lean: true });
-        const products = data.docs;
-        delete data.docs;
 
-        const links = [];
+        const result = await productManager.getProducts(req.query);
 
-        for(let index = 1; index <= data.totalPages; index++) {
-            links.push({
-                text: index,
-                link: `?limit=${limit}&page=${index}`,
-            });
+        if (result.status === "error") {
+            return res.status(500).send({ message: result.message });
         }
-        res.render("home", { products, links });
+
+
+        const { docs: products, totalPages, page, hasPrevPage, hasNextPage, prevPage, nextPage } = result.payload;
+
+
+        const prevLink = hasPrevPage ? `/?page=${prevPage}&limit=${req.query.limit || 10}` : null;
+        const nextLink = hasNextPage ? `/?page=${nextPage}&limit=${req.query.limit || 10}` : null;
+        
+
+        res.render(viewName, {
+            products,
+            totalPages,
+            page,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink
+        });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
+};
+
+viewsRouter.get("/", async (req, res) => {
+    await renderProductsPage(req, res, "home");
 });
 
 viewsRouter.get("/realtimeproducts", async (req, res) => {
+    await renderProductsPage(req, res, "realtimeproducts");
+});
+
+viewsRouter.get("/carts/:cid", async (req, res) => {
     try {
-        const { limit = 10, page = 1 } = req.query;
-        const data = await Product.paginate({}, { limit, page, lean: true });
-        const products = data.docs;
-        delete data.docs;
+        const { cid } = req.params;
+        const result = await cartManager.getCartById(cid);
 
-        const links = [];
-
-        for (let index = 1; index <= data.totalPages; index++) {
-            links.push({
-                text: index,
-                link: `?limit=${limit}&page=${index}`,
-            });
+        if (result.status === "error") {
+            return res.status(404).send(`<h1>Carrito no encontrado</h1>`);
         }
-        res.render("realtimeproducts", { products, links });
+        
+        const cart = result.payload;
+        
+        let totalPrice = 0;
+        cart.products.forEach(item => {
+            totalPrice += item.product.price * item.quantity;
+        });
+
+        res.render("cart", { 
+            title: `Carrito de Compras`,
+            cart: cart,
+            totalPrice: totalPrice 
+        });
+
     } catch (error) {
         res.status(500).send({ message: error.message });
     }

@@ -1,98 +1,99 @@
-import fs from 'fs';
+
+import Product from '../models/product.model.js';
 
 class ProductManager {
 
-    constructor(pathFile) {
-        this.pathFile = pathFile;
+    constructor() {
+        console.log("ProductManager funcionando con MongoDB.");
     }
 
-    generateNewId(products) {
-        if (products.length > 0) {
-            return products[products.length - 1].id + 1;
-        } else {
-            return 1;
+    async getProducts(params) {
+
+        const { limit = 10, page = 1, sort, query } = params;
+
+        const options = {
+            page: Number(page),
+            limit: Number(limit),
+            lean: true
+        };
+
+
+        if (sort) {
+            options.sort = { price: sort === 'asc' ? 1 : -1 };
+        }
+
+
+        const filter = query ? { category: query } : {};
+
+        try {
+
+            const result = await Product.paginate(filter, options);
+            return { status: "success", payload: result };
+        } catch (error) {
+            return { status: "error", message: "Error al obtener los productos: " + error.message };
         }
     }
 
-    async addProduct(newProduct) {
-        try {
-            const fileData = await fs.promises.readFile(this.pathFile, 'utf-8');
-            const products = JSON.parse(fileData);
+    async addProduct(productData) {
 
-            const codeExists = products.some(product => product.code === newProduct.code);
-            if (codeExists) {
-                throw new Error(`Ya existe un producto con el código "${newProduct.code}".`);
+        const { title, description, price, code, stock, category } = productData;
+        if (!title || !description || !price || !code || !stock || !category) {
+            return { status: "error", message: "Faltan campos obligatorios para crear el producto." };
+        }
+
+        try {
+            const newProduct = new Product(productData);
+            await newProduct.save();
+            return { status: "success", payload: newProduct };
+        } catch (error) {
+
+            if (error.code === 11000) {
+                return { status: "error", message: `El código "${code}" ya existe.` };
             }
-
-            const newId = this.generateNewId(products);
-            const product = { id: newId, ...newProduct };
-            products.push(product);
-
-            await fs.promises.writeFile(this.pathFile, JSON.stringify(products, null, 2), 'utf-8');
-            return product;
-        } catch (error) {
-            throw new Error('Error al agregar el nuevo producto: ' + error.message);
+            return { status: "error", message: "Error al agregar el producto: " + error.message };
         }
     }
 
-    async getProducts() {
-        try {
-            const fileData = await fs.promises.readFile(this.pathFile, 'utf-8');
-            const products = JSON.parse(fileData);
+    async updateProductById(pid, updateData) {
 
-            return products;
+        delete updateData.code;
+        delete updateData._id;
+
+        try {
+            const updatedProduct = await Product.findByIdAndUpdate(pid, updateData, { new: true });
+            if (!updatedProduct) {
+                return { status: "error", message: "Producto no encontrado." };
+            }
+            return { status: "success", payload: updatedProduct };
         } catch (error) {
-            throw new Error('Error al obtener los productos');
+            return { status: "error", message: "Error al actualizar el producto: " + error.message };
         }
     }
 
-    async getProductById(id) {
+
+    async getProductById(pid) {
         try {
-            const fileData = await fs.promises.readFile(this.pathFile, 'utf-8');
-            const products = JSON.parse(fileData);
-
-            const product = products.find((prod) => prod.id === parseInt(id));
-
+            const product = await Product.findById(pid);
             if (!product) {
-                throw new Error(`Producto con ID ${id} no encontrado.`);
+                return { status: "error", message: "Producto no encontrado." };
             }
-            return product;
+            return { status: "success", payload: product };
         } catch (error) {
-            throw new Error('Error al obtener el producto por ID: ' + error.message);
+            return { status: "error", message: "Error al buscar el producto: " + error.message };
         }
     }
 
-    async deleteProductById(idProduct) {
+    async deleteProductById(pid) {
         try {
-            const fileData = await fs.promises.readFile(this.pathFile, 'utf-8');
-            const data = JSON.parse(fileData);
-            const productIndex = data.findIndex((prod) => prod.id === parseInt(idProduct));
-
-            if (productIndex === -1) throw new Error(`Producto con ID ${idProduct} no encontrado.`);
-            data.splice(productIndex, 1);
-
-            await fs.promises.writeFile(this.pathFile, JSON.stringify(data, null, 2), 'utf-8');
-            return data;
+            const deletedProduct = await Product.findByIdAndDelete(pid);
+            if (!deletedProduct) {
+                return { status: "error", message: "Producto no encontrado." };
+            }
+            return { status: "success", payload: deletedProduct };
         } catch (error) {
-            throw new Error(`Error al eliminar el producto: ${error.message}`);
+            return { status: "error", message: "Error al eliminar el producto: " + error.message };
         }
     }
-
-    async updateProductById(idProduct, updatedProduct) {
-        try {
-            const fileData = await fs.promises.readFile(this.pathFile, 'utf-8');
-            const data = JSON.parse(fileData);
-            const productIndex = data.findIndex((prod) => prod.id === parseInt(idProduct));
-            if (productIndex === -1) throw new Error(`Producto con ID ${idProduct} no encontrado.`);
-
-            data[productIndex] = { ...data[productIndex], ...updatedProduct };
-            await fs.promises.writeFile(this.pathFile, JSON.stringify(data, null, 2), 'utf-8');
-            return data;
-        } catch (error) {
-            throw new Error(`Error al actualizar el producto: ${error.message}`);
-        }
-    }
-
 }
 
 export default ProductManager;
